@@ -85,21 +85,5 @@ python tools/export_onnx.py -c configs/rtdetr/rtdetr_r18vd_6x_coco.yml -r path/t
 
 <details open> 
 <summary>Penggunaan detects</summary>
-```shell
-  
-python tools/detects.py 
-  --config ./configs/rtdetr/rtdetr_r18vd_6x_coco.yml  --resume path/to/checkpoints  --data-root path/to/data/test/  --ann-file path/to/data/test/annotations.coco.json   --output-dir path/for/the/output   --enhance-method [linear, clahe]  --he-threshold 1.1 #untuk probabilitas 100 karena ingin melihat hasil deteksinya--clahe-clip 3.0   #enhance method=clahe --clahe-grid 8 8   #enhance method=clahe
-```
-</details>
 
-<details open> 
-<summary>Penggunaan train</summary>
-```shell
-python tools/train.py  
-  --config ./configs/rtdetr/rtdetr_r18vd_6x_coco.yml  
-  --enhance-method #[linear, clahe]  
-  --he-threshold 1.1 #[0...1]
-  --clahe-clip 3.0   #enhance method=clahe
-  --clahe-grid 8 8   #enhance method=clahe
-```
 </details>
