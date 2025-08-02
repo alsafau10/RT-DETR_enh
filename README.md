@@ -84,6 +84,10 @@ python tools/export_onnx.py -c configs/rtdetr/rtdetr_r18vd_6x_coco.yml -r path/t
 </details>
 
 <details open> 
-<summary>Penggunaan detects</summary>
-
+<summary>Penggunaan tools lainnya</summary>
+  Harap gunakan --help pada tools yang tersedia untuk melihat parameter yang dibutuhkan
+  
+```shell
+  python tools/file_name.py --help
+```
 </details>
