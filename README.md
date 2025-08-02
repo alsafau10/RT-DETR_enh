@@ -1,8 +1,12 @@
 ## TODO
-
 <details>
-<summary> see details </summary>
-
+  <summary>
+    Model Terbaik Pengujian (Pytorch)
+  </summary>
+    Model yang memberikan weight terbaik dapat diunduh pada tautan ini [url<sup>*</sup>](https://github.com/alsafau10/RT-DETR_enh/releases/download/weight/best_model.pth)
+</details>
+<!-- <details> -->
+<!-- <summary> see details </summary>
 - [x] Training
 - [x] Evaluation
 - [x] Export onnx
@@ -10,8 +14,8 @@
 - [x] Upload weight convert from paddle, see [_links_](https://github.com/lyuwenyu/RT-DETR/issues/42)
 - [x] Align training details with the [_paddle version_](../rtdetr_paddle/)
 - [x] Tuning rtdetr based on [_pretrained weights_](https://github.com/lyuwenyu/RT-DETR/issues/42)
-
-</details>
+ -->
+<!-- </details> -->
 
 <details>
 <summary>Install</summary>
@@ -48,7 +52,7 @@ export CUDA_VISIBLE_DEVICES=0
 python tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml
 ```
 
-- Training on Multiple GPUs:
+<!--Training on Multiple GPUs:
 
 ```shell
 # train on multi-gpu
@@ -63,7 +67,7 @@ torchrun --nproc_per_node=4 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coc
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 torchrun --nproc_per_node=4 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml -r path/to/checkpoint --test-only
 ```
-
+-->
 </details>
 
 <details>
