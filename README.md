@@ -3,7 +3,9 @@
   <summary>
     Model Terbaik Pengujian (Pytorch)
   </summary>
+  
     Model yang memberikan weight terbaik dapat diunduh pada tautan ini [url<sup>*</sup>](https://github.com/alsafau10/RT-DETR_enh/releases/download/weight/best_model.pth)
+    
 </details>
 <!-- <details> -->
 <!-- <summary> see details </summary>
