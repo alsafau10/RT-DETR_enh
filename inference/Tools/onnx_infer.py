@@ -16,19 +16,17 @@ IMG_EXTS = ('.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff')
 # -------------------------------------------------------------------
 
 def run_inference(sess, frame_pil, original_size, thrh, font):
-    # 1) Resize to 640x640 & batchify
+    
     im_resized = frame_pil.resize((640, 640))
     im_data = ToTensor()(im_resized)[None]     # shape (1,3,640,640)
     size    = torch.tensor([[640, 640]])       # shape (1,2)
 
-    # 2) Run ONNX inference
     output = sess.run(
         None,
         {'images': im_data.numpy(), 'orig_target_sizes': size.numpy()}
     )
     labels, boxes, scores = output
 
-    # 3) Draw detections
     draw = ImageDraw.Draw(frame_pil)
     for i in range(im_data.shape[0]):
         scr = scores[i]
@@ -47,7 +45,6 @@ def run_inference(sess, frame_pil, original_size, thrh, font):
     return frame_pil
 
 def draw_timing(frame_cv, inf_time_ms, fps, pos=(10, 30)):
-    """Overlay inference time and FPS using OpenCV."""
     text = f"Inference: {inf_time_ms:.1f} ms | FPS: {fps:.1f}"
     cv2.putText(frame_cv, text, pos, cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,255,0), 2)
     return frame_cv
@@ -66,7 +63,7 @@ def process_video(sess, video_path, output_dir, thrh, font,random_value = 0):
     out_vid = cv2.VideoWriter(out_path, fourcc, fps, (w, h))
     frame_idx = 0
 
-    # For reporting average FPS
+    # Total time and total fps
     total_time = 0
     total_frames = 0
 
@@ -77,7 +74,7 @@ def process_video(sess, video_path, output_dir, thrh, font,random_value = 0):
         # Convert to PIL Image for annotation
         frame_pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
-        # --- Timing the inference ---
+        # --- Inference time per frame  ---
         t0 = time.time()
         annotated = run_inference(sess, frame_pil, (w, h), thrh, font)
         t1 = time.time()
@@ -86,9 +83,8 @@ def process_video(sess, video_path, output_dir, thrh, font,random_value = 0):
         curr_fps = 1.0 / inf_time if inf_time > 0 else 0
         total_time += inf_time
         total_frames += 1
-        # ----------------------------
 
-        # Convert back to OpenCV image
+
         annotated_cv = cv2.cvtColor(np.array(annotated), cv2.COLOR_RGB2BGR)
         annotated_cv = draw_timing(annotated_cv, inf_time_ms, curr_fps)
         out_vid.write(annotated_cv)
@@ -99,8 +95,9 @@ def process_video(sess, video_path, output_dir, thrh, font,random_value = 0):
     cap.release()
     out_vid.release()
     avg_fps = total_frames / total_time if total_time > 0 else 0
-    print(f"✅ Saved annotated video: {out_path}")
+    print(f"Saved annotated video: {out_path}")
     print(f"Average inference FPS: {avg_fps:.2f}")
+    print(f"Total inference time in s : {(total_frames/avg_fps):.2f}")
 
 def process_images(sess, input_dir, output_dir, thrh, font,random_value = 0):
     os.makedirs(output_dir, exist_ok=True)
@@ -137,9 +134,9 @@ def main(args):
         providers=["CUDAExecutionProvider","CPUExecutionProvider"]
     )
 
-    # Show ONNX provider info
-    print("ONNX Runtime providers:", sess.get_providers())
-    print("ONNX Runtime session device:", sess.get_provider_options())
+    # # Show ONNX provider info
+    # print("ONNX Runtime providers:", sess.get_providers())
+    # print("ONNX Runtime session device:", sess.get_provider_options())
 
     try:
         font = ImageFont.truetype("Arial.ttf", 15)
